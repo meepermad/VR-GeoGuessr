@@ -10,6 +10,7 @@ public class Timer : MonoBehaviour
     public List<Texture> Images = new List<Texture>();
     public Material wrapper;
     private List<Texture> usedImages = new List<Texture>();
+    private List<double[]> coordinates = new List<double[]>();
 
     // Start is called before the first frame update
     void Start()
