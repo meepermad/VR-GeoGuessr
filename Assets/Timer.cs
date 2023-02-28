@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-//using Assets;
 
 public class Timer : MonoBehaviour
 {
@@ -15,56 +14,78 @@ public class Timer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        string path1 = Directory.GetCurrentDirectory() + @"\Assets\photoLibrary";
-        string path = Directory.GetParent(path1).FullName;
-        Debug.Log(path1);
-        DirectoryInfo dir = new DirectoryInfo(path1);
-        FileInfo[] info = dir.GetFiles( "*.jpg" );
+        // Gets the file path for the Photo Library
+        string photoLibraryPath = Directory.GetCurrentDirectory() + @"\Assets\photoLibrary";
+        DirectoryInfo dir = new DirectoryInfo(photoLibraryPath);
+        FileInfo[] photos = dir.GetFiles( "*.jpg" );
  
-        foreach ( FileInfo f in info )
-        {
-            //print ( "Found: " + f.Name );
-            //print ( "Found: " + f.FullName );
+        // Goes through the Photo Library and adds them to the master photo library
+        foreach (FileInfo f in photos){
             Texture a = null;
             a = LoadJPG(f.FullName);
             Images.Add(a);
         }
 
-        for(int i = 0; i < Images.Count; i++){
-            //print(i);
-            usedImages.Add(Images[i]);
-        }
+        // Makes a secondary list that can be manipulated without the fear of losing all the images
+        RestartList();
 
-        int num = Random.Range(0, usedImages.Count - 1);
-        wrapper.SetTexture("_MainTex", usedImages[num]);
-        usedImages.RemoveAt(num);
-
+        // Displays a random photo at the very start of the program so the user doesn't spawn into a blank skybox
+        RandomPhoto();
     }
 
     // Update is called once per frame
     void Update()
     {
+
+        // Checks to see if the elapsed time has passed
         if(timeRemaining > 0){
             timeRemaining -= Time.deltaTime;
-        } else {
+        } 
+        else {
+            // Restarts the timer
             timeRemaining = timeInterval;
+
+            // Makes sure there are photos 
             if(usedImages.Count != 0){
-                int num = Random.Range(0, usedImages.Count - 1);
-                wrapper.SetTexture("_MainTex", usedImages[num]);
-                usedImages.RemoveAt(num);
-            } else{
-                usedImages = Images;
+
+                // If there is an image, set the skybox to a random photo
+                RandomPhoto();
+            } 
+            else{
+
+                //If there isn't an image, add all the photos back to the photo library
+                RestartList();
+
             }
         }
     }
 
+
+
+// -------------------------------------------- Functions --------------------------------------------
+
+    //Takes a JPG and converts it to a texture
     public static Texture2D LoadJPG(string filePath){
-        Texture2D tex;
+        Texture2D texture;
         byte[] fileData;
         fileData = File.ReadAllBytes(filePath);
         //print(fileData);
-        tex = new Texture2D(2, 2);
-        tex.LoadImage(fileData); //..t$$anonymous$$s will auto-resize the texture dimensions.
-        return tex;
+        texture = new Texture2D(2, 2);
+        texture.LoadImage(fileData);
+        return texture;
+    }
+
+    // Sets the skybox to a random photo from the list
+    public void RandomPhoto(){
+        int num = Random.Range(0, usedImages.Count - 1);
+        wrapper.SetTexture("_MainTex", usedImages[num]);
+        usedImages.RemoveAt(num);
+    }
+
+    // Puts all the photos back to usedImages to be used again
+    public void RestartList(){
+        for(int i = 0; i < Images.Count; i++){
+            usedImages.Add(Images[i]);
+        }
     }
 }
