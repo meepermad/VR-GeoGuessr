@@ -7,10 +7,11 @@ public class Timer : MonoBehaviour
 {
     public float timeInterval = 10;
     public float timeRemaining = 10;
-    public List<Texture> Images = new List<Texture>();
+    public List<int> Images = new List<int>();
     public Material wrapper;
-    private List<Texture> usedImages = new List<Texture>();
+    private List<int> usedImages = new List<int>();
     private List<double[]> coordinates = new List<double[]>();
+    private FileInfo[] photos;
 
     // Start is called before the first frame update
     void Start()
@@ -18,13 +19,11 @@ public class Timer : MonoBehaviour
         // Gets the file path for the Photo Library
         string photoLibraryPath = Directory.GetCurrentDirectory() + @"\Assets\photoLibrary";
         DirectoryInfo dir = new DirectoryInfo(photoLibraryPath);
-        FileInfo[] photos = dir.GetFiles( "*.jpg" );
+        photos = dir.GetFiles( "*.jpg" );
  
         // Goes through the Photo Library and adds them to the master photo library
-        foreach (FileInfo f in photos){
-            Texture a = null;
-            a = LoadJPG(f.FullName);
-            Images.Add(a);
+        for(int i = 1; i <= photos.Length; i++){
+            Images.Add(i);
         }
 
         // Makes a secondary list that can be manipulated without the fear of losing all the images
@@ -79,7 +78,8 @@ public class Timer : MonoBehaviour
     // Sets the skybox to a random photo from the list
     public void RandomPhoto(){
         int num = Random.Range(0, usedImages.Count - 1);
-        wrapper.SetTexture("_MainTex", usedImages[num]);
+        Texture newPhoto = NewPhoto(num);
+        wrapper.SetTexture("_MainTex", newPhoto);
         usedImages.RemoveAt(num);
     }
 
@@ -88,5 +88,9 @@ public class Timer : MonoBehaviour
         for(int i = 0; i < Images.Count; i++){
             usedImages.Add(Images[i]);
         }
+    }
+
+    public Texture2D NewPhoto(int index){
+        return LoadJPG(photos[usedImages[index]].FullName);
     }
 }
