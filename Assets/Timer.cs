@@ -16,17 +16,17 @@ public class Timer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Gets the file path for the Photo Library
+        // Gets the file path for the Photo Library and puts them in an array
         string photoLibraryPath = Directory.GetCurrentDirectory() + @"\Assets\photoLibrary";
         DirectoryInfo dir = new DirectoryInfo(photoLibraryPath);
         photos = dir.GetFiles( "*.jpg" );
  
-        // Goes through the Photo Library and adds them to the master photo library
-        for(int i = 1; i <= photos.Length; i++){
+        // Makes a list of indexes for every photo
+        for(int i = 0; i < photos.Length - 1; i++){
             Images.Add(i);
         }
 
-        // Makes a secondary list that can be manipulated without the fear of losing all the images
+        // Makes a secondary list that can be manipulated that will copy from the original list
         RestartList();
 
         // Displays a random photo at the very start of the program so the user doesn't spawn into a blank skybox
@@ -53,7 +53,7 @@ public class Timer : MonoBehaviour
             } 
             else{
 
-                //If there isn't an image, add all the photos back to the photo library
+                //If there isn't an image, add all the indexes back to the photo library
                 RestartList();
 
             }
@@ -83,13 +83,14 @@ public class Timer : MonoBehaviour
         usedImages.RemoveAt(num);
     }
 
-    // Puts all the photos back to usedImages to be used again
+    // Puts all the indexes back to usedImages to be used again
     public void RestartList(){
         for(int i = 0; i < Images.Count; i++){
             usedImages.Add(Images[i]);
         }
     }
 
+    // Takes an index to select a photo
     public Texture2D NewPhoto(int index){
         return LoadJPG(photos[usedImages[index]].FullName);
     }
