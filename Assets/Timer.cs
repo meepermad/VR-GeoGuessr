@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class Timer : MonoBehaviour
 {
-    public float timeInterval = 10;
-    public float timeRemaining = 10;
-    public List<int> Images = new List<int>();
+    private float timeInterval = 10;
+    private float timeRemaining = 10;
+    private List<int> Images = new List<int>();
     public Material wrapper;
     private List<int> usedImages = new List<int>();
     private List<double[]> coordinates = new List<double[]>();
