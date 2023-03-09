@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
-using UnityEngine.XR.Interaction.Toolkit;
+
+[System.Serializable]
+public class PrimaryButtonEvent : UnityEvent<bool> { }
 
 public class Inputs : MonoBehaviour
 {
@@ -10,32 +12,25 @@ public class Inputs : MonoBehaviour
     public UnityEngine.XR.InputDevice rightHand;
     public InputHelpers.Button button;
 
-    // Start is called before the first frame update
-    void Start()
+    private bool lastButtonState = false;
+    private List<InputDevice> devicesWithPrimaryButton;
+
+    private void Awake()
     {
-        List<InputDevice> devices = new List<InputDevice>();
-        InputDevices.GetDevices(devices);
-
-        var leftHandedControllers = new List<UnityEngine.XR.InputDevice>();
-        var desiredCharacteristicsLeft = UnityEngine.XR.InputDeviceCharacteristics.HeldInHand | UnityEngine.XR.InputDeviceCharacteristics.Left | UnityEngine.XR.InputDeviceCharacteristics.Controller;
-        UnityEngine.XR.InputDevices.GetDevicesWithCharacteristics(desiredCharacteristicsLeft, leftHandedControllers);
-
-        var rightHandedControllers = new List<UnityEngine.XR.InputDevice>();
-        var desiredCharacteristicsRight = UnityEngine.XR.InputDeviceCharacteristics.HeldInHand | UnityEngine.XR.InputDeviceCharacteristics.Right | UnityEngine.XR.InputDeviceCharacteristics.Controller;
-        UnityEngine.XR.InputDevices.GetDevicesWithCharacteristics(desiredCharacteristicsRight, rightHandedControllers);
-
-        var leftHandDevices = new List<UnityEngine.XR.InputDevice>();
-        UnityEngine.XR.InputDevices.GetDevicesAtXRNode(UnityEngine.XR.XRNode.LeftHand, leftHandDevices);
-
-        var rightHandDevices = new List<UnityEngine.XR.InputDevice>();
-        UnityEngine.XR.InputDevices.GetDevicesAtXRNode(UnityEngine.XR.XRNode.RightHand, rightHandDevices);
-
-        foreach (var device in leftHandedControllers){
-            Debug.Log(string.Format("Device name '{0}' has characteristics '{1}'", device.name, device.characteristics.ToString()));
+        if (primaryButtonPress == null)
+        {
+            primaryButtonPress = new PrimaryButtonEvent();
         }
 
-        foreach (var device in rightHandedControllers){
-            Debug.Log(string.Format("Device name '{0}' has characteristics '{1}'", device.name, device.characteristics.ToString()));
+        devicesWithPrimaryButton = new List<InputDevice>();
+    }
+
+    void OnEnable()
+    {
+        List<InputDevice> allDevices = new List<InputDevice>();
+        InputDevices.GetDevices(allDevices);
+        foreach(InputDevice device in allDevices){
+            InputDevices_deviceConnected(device);
         }
 
         foreach(var item in devices){
@@ -52,41 +47,37 @@ public class Inputs : MonoBehaviour
             }
         }
 
-
-
-
-        /*var inputFeatures = new List<UnityEngine.XR.InputFeatureUsage>();
-        if (device.TryGetFeatureUsages(inputFeatures))
+    private void InputDevices_deviceConnected(InputDevice device)
+    {
+        bool discardedValue;
+        if (device.TryGetFeatureValue(CommonUsages.primaryButton, out discardedValue))
         {
-            foreach (var feature in inputFeatures)
-            {
-                if (feature.type == typeof(bool))
-                {
-                    bool featureValue;
-                    if (device.TryGetFeatureValue(feature.As<bool>(), out featureValue))
-                    {
-                        Debug.Log(string.Format("Bool feature {0}'s value is {1}", feature.name, featureValue.ToString()));
-                    }
-                }
-            }
-        }*/
+            devicesWithPrimaryButton.Add(device); // Add any devices that have a primary button.
+        }
     }
 
-    // Update is called once per frame
-    void Update(){
-        /*bool pressedRight;
-        leftHand.inputDevice.IsPressed(button, out pressedRight);
-        if (pressedRight) {
-            Debug.Log("Button pressed on left hand: " + button);
+    private void InputDevices_deviceDisconnected(InputDevice device)
+    {
+        if (devicesWithPrimaryButton.Contains(device))
+            devicesWithPrimaryButton.Remove(device);
+    }
+
+    void Update()
+    {
+        bool tempState = false;
+        foreach (var device in devicesWithPrimaryButton)
+        {
+            bool primaryButtonState = false;
+            tempState = device.TryGetFeatureValue(CommonUsages.primaryButton, out primaryButtonState) // did get a value
+                        && primaryButtonState // the value we got
+                        || tempState; // cumulative result from other controllers
         }
 
-        bool pressedLeft;
-        leftHand.inputDevice.IsPressed(button, out pressedLeft);
-        if (pressedLeft) {
-            Debug.Log("Button pressed on right hand: " + button);
-        }*/
-
-        
+        if (tempState != lastButtonState) // Button state changed since last frame
+        {
+            primaryButtonPress.Invoke(tempState);
+            lastButtonState = tempState;
+        }
     }
 
     
