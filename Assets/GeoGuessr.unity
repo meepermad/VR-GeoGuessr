@@ -1184,7 +1184,7 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   m_InvalidColorGradient:
     serializedVersion: 2
-    key0: {r: 1, g: 0, b: 0, a: 1}
+    key0: {r: 0.007843138, g: 0.007843138, b: 0.007843138, a: 1}
     key1: {r: 1, g: 0, b: 0, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
@@ -1247,7 +1247,7 @@ MonoBehaviour:
   m_Reticle: {fileID: 0}
   m_BlockedReticle: {fileID: 0}
   m_StopLineAtFirstRaycastHit: 1
-  m_StopLineAtSelection: 0
+  m_StopLineAtSelection: 1
 --- !u!120 &410675021
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -2058,12 +2058,12 @@ MonoBehaviour:
       m_Name: Position
       m_Type: 0
       m_ExpectedControlType: Vector3
-      m_Id: 
+      m_Id: 714f4cc7-47b3-4256-96ee-b05cedc9cd5f
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings:
       - m_Name: 
-        m_Id: 
+        m_Id: 40c0c044-edea-4cc5-8f6c-6728946b9411
         m_Path: <XRHMD>/centerEyePosition
         m_Interactions: 
         m_Processors: 
@@ -2086,12 +2086,12 @@ MonoBehaviour:
       m_Name: Rotation
       m_Type: 0
       m_ExpectedControlType: Quaternion
-      m_Id: 
+      m_Id: 0732cf93-fa5c-4e9e-a7f7-0a0998ef0a78
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings:
       - m_Name: 
-        m_Id: 
+        m_Id: 893ee594-829f-46b7-90cb-29e654a2c340
         m_Path: <XRHMD>/centerEyeRotation
         m_Interactions: 
         m_Processors: 
@@ -2280,6 +2280,7 @@ GameObject:
   - component: {fileID: 1567733057}
   - component: {fileID: 1567733056}
   - component: {fileID: 1567733058}
+  - component: {fileID: 1567733059}
   m_Layer: 0
   m_Name: ScriptHandler
   m_TagString: Untagged
@@ -2322,7 +2323,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1567733055}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 16743ee84354edf4ea2dcc2008db5c8e, type: 3}
   m_Name: 
@@ -2330,6 +2331,18 @@ MonoBehaviour:
   primaryButtonPress:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1567733059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1567733055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a6434968ac6c2d4bbac0f3448c50549, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1637337100
 GameObject:
   m_ObjectHideFlags: 0
