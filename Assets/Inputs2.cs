@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 //This will allow us to get InputDevice
 using UnityEngine.XR;
+using TMPro;
+
 
 public class Inputs2 : MonoBehaviour
 {
     //Creating a List of Input Devices to store our Input Devices in
     List<InputDevice> inputDevices = new List<InputDevice>();
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +28,8 @@ public class Inputs2 : MonoBehaviour
         {
             Debug.Log(inputDevice.name + " " + inputDevice.characteristics);
         }
+
+        
     }
 
     // Update is called once per frame

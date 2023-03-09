@@ -1,62 +1,60 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.XR;
+using UnityEngine.InputSystem;
 
 [System.Serializable]
 public class PrimaryButtonEvent : UnityEvent<bool> { }
 
 public class Inputs : MonoBehaviour
 {
-    public UnityEngine.XR.InputDevice leftHand;
-    public UnityEngine.XR.InputDevice rightHand;
-    public InputHelpers.Button button;
+    public PrimaryButtonEvent primaryButtonPress;
 
     private bool lastButtonState = false;
-    private List<InputDevice> devicesWithPrimaryButton;
+    private List<UnityEngine.XR.InputDevice> devicesWithPrimaryButton;
 
     private void Awake()
     {
         if (primaryButtonPress == null)
         {
             primaryButtonPress = new PrimaryButtonEvent();
+            
         }
 
-        devicesWithPrimaryButton = new List<InputDevice>();
+        devicesWithPrimaryButton = new List<UnityEngine.XR.InputDevice>();
     }
 
     void OnEnable()
     {
-        List<InputDevice> allDevices = new List<InputDevice>();
+        List<UnityEngine.XR.InputDevice> allDevices = new List<UnityEngine.XR.InputDevice>();
         InputDevices.GetDevices(allDevices);
-        foreach(InputDevice device in allDevices){
+        foreach(UnityEngine.XR.InputDevice device in allDevices){
             InputDevices_deviceConnected(device);
+            Debug.Log(device);
         }
+        InputDevices.deviceConnected += InputDevices_deviceConnected;
+        InputDevices.deviceDisconnected += InputDevices_deviceDisconnected;
+    }
 
-        foreach(var item in devices){
-            print(item.name + item.characteristics);
-            if(leftHandDevices.Count == 1){
-                leftHand = leftHandDevices[0];
-            } else{
-                Debug.Log("Not 1 left hand");
-            }
-            if(rightHandDevices.Count == 1){
-                rightHand = rightHandDevices[0];
-            } else{
-                Debug.Log("Not 1 right hand");
-            }
-        }
+    private void OnDisable()
+    {
+        InputDevices.deviceConnected -= InputDevices_deviceConnected;
+        InputDevices.deviceDisconnected -= InputDevices_deviceDisconnected;
+        devicesWithPrimaryButton.Clear();
+    }
 
-    private void InputDevices_deviceConnected(InputDevice device)
+    private void InputDevices_deviceConnected(UnityEngine.XR.InputDevice device)
     {
         bool discardedValue;
-        if (device.TryGetFeatureValue(CommonUsages.primaryButton, out discardedValue))
+        if (device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.primaryButton, out discardedValue))
         {
             devicesWithPrimaryButton.Add(device); // Add any devices that have a primary button.
         }
     }
 
-    private void InputDevices_deviceDisconnected(InputDevice device)
+    private void InputDevices_deviceDisconnected(UnityEngine.XR.InputDevice device)
     {
         if (devicesWithPrimaryButton.Contains(device))
             devicesWithPrimaryButton.Remove(device);
@@ -64,21 +62,29 @@ public class Inputs : MonoBehaviour
 
     void Update()
     {
-        bool tempState = false;
+        bool tempStatePrim = false;
         foreach (var device in devicesWithPrimaryButton)
         {
             bool primaryButtonState = false;
-            tempState = device.TryGetFeatureValue(CommonUsages.primaryButton, out primaryButtonState) // did get a value
+            tempStatePrim = device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.primaryButton, out primaryButtonState) // did get a value
                         && primaryButtonState // the value we got
-                        || tempState; // cumulative result from other controllers
+                        || tempStatePrim; // cumulative result from other controllers
+            print(device);
+            print(device.name);
+            //print("Left: " + device.Left);
+            //print("Right: " + device.Right);
         }
 
-        if (tempState != lastButtonState) // Button state changed since last frame
+        if (tempStatePrim != lastButtonState) // Button state changed since last frame
         {
-            primaryButtonPress.Invoke(tempState);
-            lastButtonState = tempState;
+            primaryButtonPress.Invoke(tempStatePrim);
+            lastButtonState = tempStatePrim;
+            print(1);
         }
-    }
 
-    
+
+        /*if (Gamepad.current.aButton.isPressed) {
+            print("A is pressed!");
+        }*/
+    }
 }
