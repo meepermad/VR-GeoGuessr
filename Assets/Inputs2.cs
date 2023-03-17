@@ -42,7 +42,18 @@ public class Inputs2 : MonoBehaviour
         } else{
             InputDevices.GetDevices(inputDevices);
 
-            
+            var inputDevices1 = new List<UnityEngine.XR.InputDevice>();
+            UnityEngine.XR.InputDevices.GetDevices(inputDevices1);
+
+            foreach (var device in inputDevices1)
+            {
+                Debug.Log(string.Format("Device found with name '{0}' and role '{1}'", device.name, device.role.ToString()));
+                bool triggerValue;
+                if (device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.triggerButton, out triggerValue) && triggerValue)
+                {
+                    Debug.Log("Trigger button is pressed.");
+                }
+            }
         }
     }
 }
