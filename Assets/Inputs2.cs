@@ -10,10 +10,12 @@ public class Inputs2 : MonoBehaviour
 {
     //Creating a List of Input Devices to store our Input Devices in
     List<InputDevice> inputDevices = new List<InputDevice>();
+    public Canvas ui;
     
     // Start is called before the first frame update
     void Start()
     {
+        //timer = GameObject.Find("ScriptHandler").GetComponents<Timer>();
         //We will try to Initialize the InputReader here, but all components may not be loaded
         InitializeInputReader();
     }
@@ -23,11 +25,7 @@ public class Inputs2 : MonoBehaviour
     {
 
         InputDevices.GetDevices(inputDevices);
-
-        foreach (var inputDevice in inputDevices)
-        {
-            Debug.Log(inputDevice.name + " " + inputDevice.characteristics);
-        }
+        Debug.Log("Getting");
 
         
     }
@@ -49,11 +47,37 @@ public class Inputs2 : MonoBehaviour
             {
                 Debug.Log(string.Format("Device found with name '{0}' and role '{1}'", device.name, device.role.ToString()));
                 bool triggerValue;
+                bool gripValue;
+                bool menuValue;
+                bool primaryValue;
+                bool secondaryValue;
+                //ui.enabled = !ui.enabled;
                 if (device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.triggerButton, out triggerValue) && triggerValue)
                 {
                     Debug.Log("Trigger button is pressed.");
                 }
+                if (device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.gripButton, out gripValue) && gripValue)
+                {
+                    Debug.Log("Grip button is pressed.");
+                }
+                if (device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.menuButton, out menuValue) && menuValue)
+                {
+                    Debug.Log("Menu button is pressed.");
+                }
+                if (device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.primaryButton, out primaryValue) && primaryValue)
+                {
+                    Debug.Log("Primary button is pressed.");
+                }
+                if (device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.secondaryButton, out secondaryValue) && secondaryValue)
+                {
+                    Debug.Log("Seconday button is pressed.");
+                }
             }
         }
+    }
+
+    public static void statePressed(string name){
+        Debug.Log(name);
+        //Debug.Log(name == timer[0].getCurrentState());
     }
 }

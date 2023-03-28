@@ -12,6 +12,7 @@ public class Timer : MonoBehaviour
     private List<int> usedImages = new List<int>();
     private List<double[]> coordinates = new List<double[]>();
     private FileInfo[] photos;
+    private static string currentPhotoState = "";
 
     // Start is called before the first frame update
     void Start()
@@ -92,6 +93,11 @@ public class Timer : MonoBehaviour
 
     // Takes an index to select a photo
     public Texture2D NewPhoto(int index){
+        currentPhotoState = photos[usedImages[index]].Name;
         return LoadJPG(photos[usedImages[index]].FullName);
+    }
+
+    public static string getCurrentState(){
+        return currentPhotoState;
     }
 }
