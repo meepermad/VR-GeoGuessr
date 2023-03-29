@@ -93,11 +93,20 @@ public class Timer : MonoBehaviour
 
     // Takes an index to select a photo
     public Texture2D NewPhoto(int index){
-        currentPhotoState = photos[usedImages[index]].Name;
+        string[] tempString;
+        tempString = photos[usedImages[index]].Name.Split(char.Parse("_"));
+        currentPhotoState = tempString[0];
+        Debug.Log(currentPhotoState);
         return LoadJPG(photos[usedImages[index]].FullName);
     }
 
     public static string getCurrentState(){
         return currentPhotoState;
+    }
+
+    public static void statePressed(string name){
+        Debug.Log(name);
+        Debug.Log(name == getCurrentState());
+        //Debug.Log(name == timer[0].getCurrentState());
     }
 }

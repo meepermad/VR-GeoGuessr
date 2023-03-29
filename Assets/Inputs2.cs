@@ -25,7 +25,7 @@ public class Inputs2 : MonoBehaviour
     {
 
         InputDevices.GetDevices(inputDevices);
-        Debug.Log("Getting");
+        //Debug.Log("Getting");
 
         
     }
@@ -45,7 +45,7 @@ public class Inputs2 : MonoBehaviour
 
             foreach (var device in inputDevices1)
             {
-                Debug.Log(string.Format("Device found with name '{0}' and role '{1}'", device.name, device.role.ToString()));
+                //Debug.Log(string.Format("Device found with name '{0}' and role '{1}'", device.name, device.role.ToString()));
                 bool triggerValue;
                 bool gripValue;
                 bool menuValue;
