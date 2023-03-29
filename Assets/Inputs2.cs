@@ -59,6 +59,7 @@ public class Inputs2 : MonoBehaviour
                 if (device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.gripButton, out gripValue) && gripValue)
                 {
                     Debug.Log("Grip button is pressed.");
+                    ui.enabled = !ui.enabled;
                 }
                 if (device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.menuButton, out menuValue) && menuValue)
                 {
