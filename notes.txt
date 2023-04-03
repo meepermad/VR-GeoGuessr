@@ -1,9 +1,29 @@
-https://docs.unity3d.com/Manual/xr_input.html
-
-----------------------------------------------------------------------------------------------------------------------------------------------------
 https://forum.unity.com/threads/zoom-and-pan-an-image.1048598/
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------
-
+Kentucky
+Louisiana
+Maine
+Maryland
+Massachusetts
+Michigan
+Minnesota
+Mississippi
+Nebraska
+New Hampshire
+New Jersey
+New York
+North Carolina
+Ohio
+Oklahoma
+Pennsylvania
+Rhode Island
+South Carolina
+Tennessee
+Texas
+Vermont
+Virginia
+West Virginia
+Wisconsin
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------
