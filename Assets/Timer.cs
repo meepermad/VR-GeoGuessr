@@ -43,21 +43,7 @@ public class Timer : MonoBehaviour
             timeRemaining -= Time.deltaTime;
         } 
         else {
-            // Restarts the timer
-            timeRemaining = timeInterval;
-
-            // Makes sure there are photos 
-            if(usedImages.Count != 0){
-
-                // If there is an image, set the skybox to a random photo
-                RandomPhoto();
-            } 
-            else{
-
-                //If there isn't an image, add all the indexes back to the photo library
-                RestartList();
-
-            }
+            continueGame();
         }
     }
 
@@ -104,9 +90,30 @@ public class Timer : MonoBehaviour
         return currentPhotoState;
     }
 
-    public static void statePressed(string name){
+    public void statePressed(string name){
         Debug.Log(name);
         Debug.Log(name == getCurrentState());
+        if(name == getCurrentState()){
+            continueGame();
+        }
         //Debug.Log(name == timer[0].getCurrentState());
+    }
+
+    public void continueGame(){
+        // Restarts the timer
+            timeRemaining = timeInterval;
+
+            // Makes sure there are photos 
+            if(usedImages.Count != 0){
+
+                // If there is an image, set the skybox to a random photo
+                RandomPhoto();
+            } 
+            else{
+
+                //If there isn't an image, add all the indexes back to the photo library
+                RestartList();
+
+            }
     }
 }

@@ -11,6 +11,16 @@ public class Inputs2 : MonoBehaviour
     //Creating a List of Input Devices to store our Input Devices in
     List<InputDevice> inputDevices = new List<InputDevice>();
     public Canvas ui;
+    bool triggerValue;
+    bool previousTriggerState = false;
+    bool gripValue;
+    bool previousGripState = false;
+    bool menuValue;
+    bool previousMenuState = false;
+    bool primaryValue;
+    bool previousPrimaryState = false;
+    bool secondaryValue;
+    bool previousSecondaryState = false;
     
     // Start is called before the first frame update
     void Start()
@@ -46,32 +56,52 @@ public class Inputs2 : MonoBehaviour
             foreach (var device in inputDevices1)
             {
                 //Debug.Log(string.Format("Device found with name '{0}' and role '{1}'", device.name, device.role.ToString()));
-                bool triggerValue;
-                bool gripValue;
-                bool menuValue;
-                bool primaryValue;
-                bool secondaryValue;
                 //ui.enabled = !ui.enabled;
-                if (device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.triggerButton, out triggerValue) && triggerValue)
-                {
+                if (device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.triggerButton, out triggerValue) && triggerValue){
                     Debug.Log("Trigger button is pressed.");
+                    previousTriggerState = true;
                 }
-                if (device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.gripButton, out gripValue) && gripValue)
-                {
-                    Debug.Log("Grip button is pressed.");
-                    ui.enabled = !ui.enabled;
+                else{
+                    previousTriggerState = false;
                 }
-                if (device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.menuButton, out menuValue) && menuValue)
-                {
+
+
+                if (device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.gripButton, out gripValue) && gripValue){
+                    if(!previousGripState){
+                        Debug.Log("Grip button is pressed.");
+                        ui.enabled = !ui.enabled;
+                    }
+                    previousGripState = true;
+                }
+                else{
+                    previousGripState = false;
+                }
+
+
+                if (device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.menuButton, out menuValue) && menuValue){
                     Debug.Log("Menu button is pressed.");
+                    previousMenuState = true;
                 }
-                if (device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.primaryButton, out primaryValue) && primaryValue)
-                {
+                else{
+                    previousMenuState = false;
+                }
+
+
+                if (device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.primaryButton, out primaryValue) && primaryValue){
                     Debug.Log("Primary button is pressed.");
+                    previousPrimaryState = true;
                 }
-                if (device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.secondaryButton, out secondaryValue) && secondaryValue)
-                {
+                else{
+                    previousPrimaryState = false;
+                }
+
+
+                if (device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.secondaryButton, out secondaryValue) && secondaryValue){
                     Debug.Log("Seconday button is pressed.");
+                    previousSecondaryState = true;
+                }
+                else{
+                    previousSecondaryState = false;
                 }
             }
         }
