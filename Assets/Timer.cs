@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class Timer : MonoBehaviour
 {
@@ -13,6 +15,15 @@ public class Timer : MonoBehaviour
     private List<double[]> coordinates = new List<double[]>();
     private FileInfo[] photos;
     private static string currentPhotoState = "";
+    private double correct = 0;
+    private double wrong = 0;
+    private string previousState = "";
+    [SerializeField] public TextMeshProUGUI correctText;
+    [SerializeField] public TextMeshProUGUI wrongText;
+    [SerializeField] public TextMeshProUGUI previousStateText;
+    [SerializeField] public TextMeshProUGUI timeRemainingText;
+    [SerializeField] public TextMeshProUGUI guessesRemainingText;
+    private double guesses = 3;
 
     // Start is called before the first frame update
     void Start()
@@ -38,11 +49,17 @@ public class Timer : MonoBehaviour
     void Update()
     {
 
+        correctText.text = ("Correct : " + correct);
+        wrongText.text = ("Wrong : " + wrong);
+        previousStateText.text = ("Previous State : " + previousState);
+        guessesRemainingText.text = ("Guesses : " + guesses);
+        timeRemainingText.text = ("Time Left : " + Mathf.Round(timeRemaining));
         // Checks to see if the elapsed time has passed
         if(timeRemaining > 0){
             timeRemaining -= Time.deltaTime;
         } 
         else {
+            wrong++;
             continueGame();
         }
     }
@@ -81,6 +98,7 @@ public class Timer : MonoBehaviour
     public Texture2D NewPhoto(int index){
         string[] tempString;
         tempString = photos[usedImages[index]].Name.Split(char.Parse("_"));
+        previousState = currentPhotoState;
         currentPhotoState = tempString[0];
         Debug.Log(currentPhotoState);
         return LoadJPG(photos[usedImages[index]].FullName);
@@ -95,6 +113,11 @@ public class Timer : MonoBehaviour
         Debug.Log(name == getCurrentState());
         if(name == getCurrentState()){
             continueGame();
+        } else if(guesses < 1){
+            wrong++;
+            continueGame();
+        } else{
+            guesses--;
         }
         //Debug.Log(name == timer[0].getCurrentState());
     }
