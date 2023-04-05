@@ -19,7 +19,7 @@ public class StatFollow : MonoBehaviour
     void Update()
     {
         // Define my target position in front of the camera ->
-        Vector3 targetPosition = target.TransformPoint(new Vector3(4.1f, 1.35f, CameraDistance));
+        Vector3 targetPosition = target.TransformPoint(new Vector3(0.9f, 1f, CameraDistance));
     
         // Smoothly move my object towards that position ->
         transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothTime);

@@ -85,6 +85,7 @@ public class Timer : MonoBehaviour
         Texture newPhoto = NewPhoto(num);
         wrapper.SetTexture("_MainTex", newPhoto);
         usedImages.RemoveAt(num);
+        guesses = 3;
     }
 
     // Puts all the indexes back to usedImages to be used again
@@ -113,6 +114,7 @@ public class Timer : MonoBehaviour
         Debug.Log(name == getCurrentState());
         if(name == getCurrentState()){
             continueGame();
+            correct++;
         } else if(guesses < 1){
             wrong++;
             continueGame();

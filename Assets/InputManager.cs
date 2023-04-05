@@ -6,11 +6,12 @@ using UnityEngine.XR;
 using TMPro;
 
 
-public class Inputs2 : MonoBehaviour
+public class InputManager : MonoBehaviour
 {
     //Creating a List of Input Devices to store our Input Devices in
     List<InputDevice> inputDevices = new List<InputDevice>();
     public Canvas ui;
+    public Camera cam;
     bool triggerValue;
     bool previousTriggerState = false;
     bool gripValue;
@@ -25,6 +26,7 @@ public class Inputs2 : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //cam.stereoTargetEye = StereoTargetEyeMask.None;
         //timer = GameObject.Find("ScriptHandler").GetComponents<Timer>();
         //We will try to Initialize the InputReader here, but all components may not be loaded
         InitializeInputReader();
@@ -81,6 +83,7 @@ public class Inputs2 : MonoBehaviour
                 if (device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.menuButton, out menuValue) && menuValue){
                     Debug.Log("Menu button is pressed.");
                     previousMenuState = true;
+                    cam.fieldOfView = 60f;
                 }
                 else{
                     previousMenuState = false;
@@ -90,6 +93,7 @@ public class Inputs2 : MonoBehaviour
                 if (device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.primaryButton, out primaryValue) && primaryValue){
                     Debug.Log("Primary button is pressed.");
                     previousPrimaryState = true;
+                    cam.fieldOfView += 0.1f;
                 }
                 else{
                     previousPrimaryState = false;
@@ -99,6 +103,7 @@ public class Inputs2 : MonoBehaviour
                 if (device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.secondaryButton, out secondaryValue) && secondaryValue){
                     Debug.Log("Seconday button is pressed.");
                     previousSecondaryState = true;
+                    cam.fieldOfView -= 0.1f;
                 }
                 else{
                     previousSecondaryState = false;
