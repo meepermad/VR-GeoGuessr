@@ -4,6 +4,7 @@ using UnityEngine;
 //This will allow us to get InputDevice
 using UnityEngine.XR;
 using TMPro;
+using System.IO;
 
 
 public class InputManager : MonoBehaviour
@@ -12,6 +13,7 @@ public class InputManager : MonoBehaviour
     List<InputDevice> inputDevices = new List<InputDevice>();
     public Canvas ui;
     public Camera cam;
+    double waitTime = 0.75;
     bool triggerValue;
     bool previousTriggerState = false;
     bool gripValue;
@@ -45,6 +47,7 @@ public class InputManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        waitTime -= Time.deltaTime;
         //We should have a total of 3 Input Devices. If it’s less, then we try to initialize them again.
         if(inputDevices.Count < 2)
         {
@@ -70,8 +73,11 @@ public class InputManager : MonoBehaviour
 
                 if (device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.gripButton, out gripValue) && gripValue){
                     if(!previousGripState){
-                        Debug.Log("Grip button is pressed.");
-                        ui.enabled = !ui.enabled;
+                        if(waitTime < 0){
+                            Debug.Log("Grip button is pressed.");
+                            ui.enabled = !ui.enabled;
+                            waitTime = 0.75;
+                        }
                     }
                     previousGripState = true;
                 }
