@@ -27,6 +27,8 @@ public class Timer : MonoBehaviour
     public AudioSource alarmSound;
     public AudioSource successSound;
     public AudioSource sirenSound;
+    public AudioSource clockSound;
+    bool clockNotPlayed = true;
 
     // Start is called before the first frame update
     void Start()
@@ -60,6 +62,12 @@ public class Timer : MonoBehaviour
         // Checks to see if the elapsed time has passed
         if(timeRemaining > 0){
             timeRemaining -= Time.deltaTime;
+            if(timeRemaining < 10){
+                if(clockNotPlayed){
+                    clockSound.Play();
+                    clockNotPlayed = false;
+                }
+            }
         } 
         else {
             wrong++;
@@ -134,6 +142,7 @@ public class Timer : MonoBehaviour
     public void continueGame(){
         // Restarts the timer
             timeRemaining = timeInterval;
+            clockNotPlayed = true;
 
             // Makes sure there are photos 
             if(usedImages.Count != 0){
