@@ -60,11 +60,11 @@ public class Timer : MonoBehaviour
         // Checks to see if the elapsed time has passed
         if(timeRemaining > 0){
             timeRemaining -= Time.deltaTime;
-            sirenSound.Play();
         } 
         else {
             wrong++;
             continueGame();
+            sirenSound.Play();
         }
     }
 
