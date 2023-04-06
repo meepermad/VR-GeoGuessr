@@ -24,6 +24,9 @@ public class Timer : MonoBehaviour
     [SerializeField] public TextMeshProUGUI timeRemainingText;
     [SerializeField] public TextMeshProUGUI guessesRemainingText;
     private double guesses = 3;
+    public AudioSource alarmSound;
+    public AudioSource successSound;
+    public AudioSource sirenSound;
 
     // Start is called before the first frame update
     void Start()
@@ -115,11 +118,14 @@ public class Timer : MonoBehaviour
         if(name == getCurrentState()){
             continueGame();
             correct++;
-        } else if(guesses < 1){
+            successSound.Play();
+        } else if(guesses <= 1){
             wrong++;
             continueGame();
+            alarmSound.Play();
         } else{
             guesses--;
+            sirenSound.Play();
         }
         //Debug.Log(name == timer[0].getCurrentState());
     }
