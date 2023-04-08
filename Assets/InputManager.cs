@@ -12,8 +12,10 @@ public class InputManager : MonoBehaviour
     //Creating a List of Input Devices to store our Input Devices in
     List<InputDevice> inputDevices = new List<InputDevice>();
     public Canvas ui;
+    public Canvas stats;
     public Camera cam;
-    double waitTime = 0.75;
+    double waitTimeUI = 0.75;
+    double waitTimeStats = 0.75;
     bool triggerValue;
     bool previousTriggerState = false;
     bool gripValue;
@@ -47,7 +49,8 @@ public class InputManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        waitTime -= Time.deltaTime;
+        waitTimeUI -= Time.deltaTime;
+        waitTimeStats -= Time.deltaTime;
         //We should have a total of 3 Input Devices. If it’s less, then we try to initialize them again.
         if(inputDevices.Count < 2)
         {
@@ -73,10 +76,10 @@ public class InputManager : MonoBehaviour
 
                 if (device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.gripButton, out gripValue) && gripValue){
                     if(!previousGripState){
-                        if(waitTime < 0){
+                        if(waitTimeUI < 0){
                             Debug.Log("Grip button is pressed.");
                             ui.enabled = !ui.enabled;
-                            waitTime = 0.75;
+                            waitTimeUI = 0.75;
                         }
                     }
                     previousGripState = true;
@@ -100,6 +103,10 @@ public class InputManager : MonoBehaviour
                     Debug.Log("Primary button is pressed.");
                     previousPrimaryState = true;
                     cam.fieldOfView += 0.1f;
+                    if(waitTimeStats < 0){
+                        stats.enabled = !ui.enabled;
+                        waitTimeStats = 0.75;
+                    }
                 }
                 else{
                     previousPrimaryState = false;

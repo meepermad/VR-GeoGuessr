@@ -29,6 +29,7 @@ public class Timer : MonoBehaviour
     public AudioSource sirenSound;
     public AudioSource clockSound;
     bool clockNotPlayed = true;
+    public Image timerBar;
 
     // Start is called before the first frame update
     void Start()
@@ -74,6 +75,7 @@ public class Timer : MonoBehaviour
             continueGame();
             sirenSound.Play();
         }
+        timerBar.fillAmount = timeRemaining/timeInterval;
     }
 
 
@@ -123,7 +125,6 @@ public class Timer : MonoBehaviour
 
     public void statePressed(string name){
         Debug.Log(name);
-        Debug.Log(name == getCurrentState());
         if(name == getCurrentState()){
             continueGame();
             correct++;
