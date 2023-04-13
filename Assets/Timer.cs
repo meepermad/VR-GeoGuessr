@@ -73,7 +73,7 @@ public class Timer : MonoBehaviour
         else {
             wrong++;
             continueGame();
-            sirenSound.Play();
+            alarmSound.Play();
         }
         timerBar.fillAmount = timeRemaining/timeInterval;
     }

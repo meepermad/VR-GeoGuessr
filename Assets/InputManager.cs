@@ -104,7 +104,7 @@ public class InputManager : MonoBehaviour
                     previousPrimaryState = true;
                     cam.fieldOfView += 0.1f;
                     if(waitTimeStats < 0){
-                        stats.enabled = !ui.enabled;
+                        stats.enabled = !stats.enabled;
                         waitTimeStats = 0.75;
                     }
                 }
